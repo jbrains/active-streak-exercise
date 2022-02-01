@@ -1,10 +1,9 @@
 import { test } from "zora";
 import { DateTime } from "luxon";
 
-const isBeforeYesterday = (date) => date < DateTime.fromISO("2022-01-31");
 const activeStreak = (measurements) =>
   measurements.length > 0
-    ? isBeforeYesterday(DateTime.fromISO(measurements[0].date))
+    ? DateTime.fromISO(measurements[0].date) < "2022-01-31"
       ? "0 days"
       : "1 day"
     : "0 days";
