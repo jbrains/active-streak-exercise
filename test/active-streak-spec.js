@@ -128,6 +128,53 @@ test("active streak", (t) => {
       "would-be streak of 2 days, but it starts before yesterday"
     );
   });
+
+  test("active streak, longer", (t) => {
+    t.equal(
+      activeStreakFromDatesAsText([
+        "2022-01-30",
+        "2022-01-29",
+        "2022-01-28",
+        "2022-01-27",
+        "2022-01-26",
+      ]),
+      0,
+      "would-be streak of 5 days, but it starts before yesterday"
+    );
+    t.equal(
+      activeStreakFromDatesAsText([
+        "2022-01-31",
+        "2022-01-30",
+        "2022-01-29",
+        "2022-01-28",
+        "2022-01-27",
+      ]),
+      5,
+      "streak of 5 days, starting yesterday"
+    );
+    t.equal(
+      activeStreakFromDatesAsText([
+        "2022-02-01",
+        "2022-01-31",
+        "2022-01-30",
+        "2022-01-29",
+        "2022-01-28",
+      ]),
+      5,
+      "streak of 5 days, starting today"
+    );
+    t.equal(
+      activeStreakFromDatesAsText([
+        "2022-02-01",
+        "2022-01-31",
+        "2022-01-30",
+        "2022-01-24",
+        "2022-01-23",
+      ]),
+      3,
+      "streak of 3 days, starting today, before a missed day"
+    );
+  });
 });
 
 skip("quarantined tests for end to end", (t) => {
