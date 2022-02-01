@@ -19,9 +19,9 @@ const activeStreak = (asOfDate) => (datesSortedByMostRecent) =>
 
 const startDateOfStreak = (asOfDate, mostRecentDate) => {
   let yesterday = asOfDate.minus({ days: 1 });
-  return mostRecentDate == asOfDate
+  return mostRecentDate.equals(asOfDate)
     ? asOfDate
-    : mostRecentDate == yesterday
+    : mostRecentDate.equals(yesterday)
     ? yesterday
     : undefined;
 };
@@ -57,6 +57,14 @@ test("luxon", (t) => {
   t.ok(date("2022-01-30") < date("2022-01-31"));
 });
 
+test("start date of streak", (t) => {
+  t.equal(
+    startDateOfStreak(date("2022-02-01"), date("2022-02-01")),
+    date("2022-02-01"),
+    "Start date of streak, when we match today"
+  );
+});
+
 test("active streak", (t) => {
   const activeStreakFromDatesAsText = (datesAsText) =>
     activeStreak(date("2022-02-01"))(datesAsText.map((each) => date(each)));
@@ -70,11 +78,6 @@ skip("quarantined tests for active streak", (t) => {
       datesAsText.map((each) => DateTime.fromISO(each))
     );
 
-  t.equal(
-    startDateOfStreak(date("2022-02-01"), date("2022-02-01")),
-    date("2022-02-01"),
-    "Start date of streak, when we match today"
-  );
   t.equal(activeStreakFromDatesAsText(["2022-02-01"]), 1);
   t.equal(activeStreakFromDatesAsText(["2022-01-31"]), 1);
 
