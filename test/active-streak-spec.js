@@ -56,7 +56,7 @@ test("luxon", (t) => {
   );
 });
 
-skip("active streak", (t) => {
+skip("quarantined tests for active streak", (t) => {
   const activeStreakFromDatesAsText = (datesAsText) =>
     activeStreak(DateTime.fromISO("2022-02-01"))(
       datesAsText.map((each) => DateTime.fromISO(each))
@@ -106,7 +106,7 @@ skip("active streak", (t) => {
   );
 });
 
-skip("end to end", (t) => {
+skip("quarantined tests for end to end", (t) => {
   t.equal(formatActiveStreak("2022-02-01")([]), "0 days");
   t.equal(formatActiveStreak("2022-02-01")([{ date: "2022-02-01" }]), "1 day");
   t.equal(formatActiveStreak("2022-02-01")([{ date: "2022-01-31" }]), "1 day");
