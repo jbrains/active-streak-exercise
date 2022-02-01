@@ -82,6 +82,11 @@ test("active streak", (t) => {
       1,
       "streak from yesterday"
     );
+    t.equal(
+      activeStreakFromDatesAsText(["2022-01-30"]),
+      0,
+      "no streak: date too early"
+    );
   });
 });
 
