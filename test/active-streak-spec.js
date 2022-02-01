@@ -4,13 +4,14 @@ import { DateTime } from "luxon";
 const activeStreak = (datesSortedByMostRecent) =>
   datesSortedByMostRecent.length === 0
     ? 0
-    : DateTime.fromISO(datesSortedByMostRecent[0]) <
-      DateTime.fromISO("2022-01-31")
+    : datesSortedByMostRecent[0] < DateTime.fromISO("2022-01-31")
     ? 0
     : 1;
 
 const formatActiveStreak = (measurements) =>
-  formatDurationInDays(activeStreak(measurements.map((m) => m.date)));
+  formatDurationInDays(
+    activeStreak(measurements.map((m) => DateTime.fromISO(m.date)))
+  );
 
 const formatDurationInDays = (n) => `${n} day${n === 1 ? "" : "s"}`;
 
