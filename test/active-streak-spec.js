@@ -1,13 +1,13 @@
 import { skip, test } from "zora";
 import { DateTime } from "luxon";
 
+const date = (iso8601Text) => DateTime.fromISO(iso8601Text).startOf("day");
+
 const formatDurationInDays = (n) => `${n} day${n === 1 ? "" : "s"}`;
 
 const formatActiveStreak = (asOfDateAsText) => (measurements) =>
   formatDurationInDays(
-    activeStreak(DateTime.fromISO(asOfDateAsText).startOf("day"))(
-      measurements.map((m) => DateTime.fromISO(m.date).startOf("day"))
-    )
+    activeStreak(date(asOfDateAsText))(measurements.map((m) => date(m.date)))
   );
 
 const startDateOfStreak = (asOfDate, mostRecentDate) => {
@@ -34,9 +34,6 @@ const go = (asOfDate, datesSortedByMostRecent) =>
     : asOfDate.equals(datesSortedByMostRecent[0])
     ? 1 + go(asOfDate.minus({ days: 1 }), datesSortedByMostRecent.slice(1))
     : 0;
-
-// ===== Test Helpers =====
-const date = (iso8601Text) => DateTime.fromISO(iso8601Text).startOf("day");
 
 test("luxon", (t) => {
   t.notOk(
