@@ -107,39 +107,27 @@ test("active streak", (t) => {
       2,
       "active streak of 2 days from today"
     );
-  });
-});
-
-skip("quarantined tests for active streak", (t) => {
-  const activeStreakFromDatesAsText = (datesAsText) =>
-    activeStreak(DateTime.fromISO("2022-02-01"))(
-      datesAsText.map((each) => DateTime.fromISO(each))
+    t.equal(
+      activeStreakFromDatesAsText(["2022-01-31", "2022-01-30"]),
+      2,
+      "active streak of 2 days from yesterday"
     );
-
-  t.equal(["2022-02-01", "2022-01-31"].slice(1), ["2022-01-31"]);
-  t.equal(DateTime.fromISO("2022-01-31"), DateTime.fromISO("2022-01-31"));
-  t.equal(
-    go(DateTime.fromISO("2022-01-31"), [DateTime.fromISO("2022-01-31")]),
-    1
-  );
-  t.equal(go(DateTime.fromISO("2022-01-30"), []), 0);
-
-  t.equal(
-    go(DateTime.fromISO("2022-01-31"), [DateTime.fromISO("2022-01-30")]),
-    0
-  );
-  t.equal(activeStreakFromDatesAsText(["2022-02-01", "2022-01-30"]), 1);
-
-  t.equal(
-    activeStreakFromDatesAsText(["2022-01-30", "2022-01-29"]),
-    0,
-    "Streak of 2 days, but it starts before yesterday"
-  );
-  t.equal(
-    activeStreakFromDatesAsText(["2022-01-31", "2022-01-30"]),
-    2,
-    "Streak of 2 days that starts yesterday"
-  );
+    t.equal(
+      activeStreakFromDatesAsText(["2022-02-01", "2022-01-30"]),
+      1,
+      "active streak of 1 day, because we skipped a day"
+    );
+    t.equal(
+      activeStreakFromDatesAsText(["2022-01-31", "2022-01-29"]),
+      1,
+      "active streak of 1 day from yesterday, because we skipped a day"
+    );
+    t.equal(
+      activeStreakFromDatesAsText(["2022-01-30", "2022-01-29"]),
+      0,
+      "would-be streak of 2 days, but it starts before yesterday"
+    );
+  });
 });
 
 skip("quarantined tests for end to end", (t) => {
