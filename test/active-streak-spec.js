@@ -10,13 +10,6 @@ const formatActiveStreak = (asOfDateAsText) => (measurements) =>
     )
   );
 
-const activeStreak = (asOfDate) => (datesSortedByMostRecent) =>
-  datesSortedByMostRecent.length === 0
-    ? 0
-    : startDateOfStreak(asOfDate, datesSortedByMostRecent[0]) === undefined
-    ? 0
-    : 1;
-
 const startDateOfStreak = (asOfDate, mostRecentDate) => {
   let yesterday = asOfDate.minus({ days: 1 });
   return mostRecentDate.equals(asOfDate)
@@ -26,11 +19,20 @@ const startDateOfStreak = (asOfDate, mostRecentDate) => {
     : undefined;
 };
 
+const activeStreak = (asOfDate) => (datesSortedByMostRecent) => {
+  if (datesSortedByMostRecent.length === 0) {
+    return 0;
+  }
+
+  let startDate = startDateOfStreak(asOfDate, datesSortedByMostRecent[0]);
+  return startDate === undefined ? 0 : go(startDate, datesSortedByMostRecent);
+};
+
 const go = (asOfDate, datesSortedByMostRecent) =>
   datesSortedByMostRecent.length === 0
     ? 0
-    : asOfDate === datesSortedByMostRecent[0]
-    ? 1
+    : asOfDate.equals(datesSortedByMostRecent[0])
+    ? 1 + go(asOfDate.minus({ days: 1 }), datesSortedByMostRecent.slice(1))
     : 0;
 
 // ===== Test Helpers =====
@@ -98,6 +100,14 @@ test("active streak", (t) => {
       "no streak: date too early"
     );
   });
+
+  test("active streak, 2 dates", (t) => {
+    t.equal(
+      activeStreakFromDatesAsText(["2022-02-01", "2022-01-31"]),
+      2,
+      "active streak of 2 days from today"
+    );
+  });
 });
 
 skip("quarantined tests for active streak", (t) => {
@@ -106,7 +116,6 @@ skip("quarantined tests for active streak", (t) => {
       datesAsText.map((each) => DateTime.fromISO(each))
     );
 
-  t.equal(activeStreakFromDatesAsText(["2022-02-01", "2022-01-31"]), 2);
   t.equal(["2022-02-01", "2022-01-31"].slice(1), ["2022-01-31"]);
   t.equal(DateTime.fromISO("2022-01-31"), DateTime.fromISO("2022-01-31"));
   t.equal(
