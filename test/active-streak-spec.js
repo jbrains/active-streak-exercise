@@ -177,9 +177,24 @@ test("active streak", (t) => {
   });
 });
 
-skip("quarantined tests for end to end", (t) => {
+test("quarantined tests for end to end", (t) => {
   t.equal(formatActiveStreak("2022-02-01")([]), "0 days");
   t.equal(formatActiveStreak("2022-02-01")([{ date: "2022-02-01" }]), "1 day");
   t.equal(formatActiveStreak("2022-02-01")([{ date: "2022-01-31" }]), "1 day");
   t.equal(formatActiveStreak("2022-02-01")([{ date: "2022-01-30" }]), "0 days");
+  t.equal(
+    formatActiveStreak("1974-05-04")([
+      { date: "1974-05-03" },
+      { date: "1974-05-02" },
+      { date: "1974-05-01" },
+      { date: "1974-04-30" },
+      { date: "1974-04-29" },
+      { date: "1974-04-28" },
+      { date: "1974-04-24" },
+      { date: "1974-04-23" },
+      { date: "1974-04-22" },
+      { date: "1974-04-18" },
+    ]),
+    "6 days"
+  );
 });
