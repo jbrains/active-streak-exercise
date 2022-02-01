@@ -17,13 +17,6 @@ const formatActiveStreak = (measurements) =>
 
 const formatDurationInDays = (n) => `${n} day${n === 1 ? "" : "s"}`;
 
-test("end to end", (t) => {
-  t.equal(formatActiveStreak([]), "0 days");
-  t.equal(formatActiveStreak([{ date: "2022-02-01" }]), "1 day");
-  t.equal(formatActiveStreak([{ date: "2022-01-31" }]), "1 day");
-  t.ok(DateTime.fromISO("2022-01-30") < DateTime.fromISO("2022-01-31"));
-  t.equal(formatActiveStreak([{ date: "2022-01-30" }]), "0 days");
-});
 test("active streak", (t) => {
   const activeStreakFromDatesAsText = (datesAsText) =>
     activeStreak(DateTime.fromISO("2022-02-01"))(
@@ -34,4 +27,12 @@ test("active streak", (t) => {
   t.equal(activeStreakFromDatesAsText(["2022-02-01"]), 1);
   t.equal(activeStreakFromDatesAsText(["2022-01-31"]), 1);
   t.equal(activeStreakFromDatesAsText(["2022-01-30"]), 0);
+});
+
+test("end to end", (t) => {
+  t.equal(formatActiveStreak([]), "0 days");
+  t.equal(formatActiveStreak([{ date: "2022-02-01" }]), "1 day");
+  t.equal(formatActiveStreak([{ date: "2022-01-31" }]), "1 day");
+  t.ok(DateTime.fromISO("2022-01-30") < DateTime.fromISO("2022-01-31"));
+  t.equal(formatActiveStreak([{ date: "2022-01-30" }]), "0 days");
 });
