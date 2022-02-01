@@ -15,7 +15,10 @@ const activeStreak = (asOfDate) => (datesSortedByMostRecent) =>
     ? 0
     : datesSortedByMostRecent[0] < asOfDate.minus({ days: 1 })
     ? 0
-    : 1;
+    : 1 + go(asOfDate.minus({ days: 1 }), datesSortedByMostRecent.slice(1));
+
+const go = (asOfDate, datesSortedByMostRecent) =>
+  datesSortedByMostRecent.length === 0 ? 0 : 1;
 
 test("active streak", (t) => {
   const activeStreakFromDatesAsText = (datesAsText) =>
@@ -27,6 +30,7 @@ test("active streak", (t) => {
   t.equal(activeStreakFromDatesAsText(["2022-02-01"]), 1);
   t.equal(activeStreakFromDatesAsText(["2022-01-31"]), 1);
   t.equal(activeStreakFromDatesAsText(["2022-01-30"]), 0);
+  t.equal(activeStreakFromDatesAsText(["2022-02-01", "2022-01-31"]), 2);
 });
 
 test("end to end", (t) => {
