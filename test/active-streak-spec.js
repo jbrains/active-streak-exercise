@@ -70,6 +70,19 @@ test("active streak", (t) => {
     activeStreak(date("2022-02-01"))(datesAsText.map((each) => date(each)));
 
   t.equal(activeStreakFromDatesAsText([]), 0, "no dates, no streak");
+
+  test("active streak, 1 date", (t) => {
+    t.equal(
+      activeStreakFromDatesAsText(["2022-02-01"]),
+      1,
+      "streak from today"
+    );
+    t.equal(
+      activeStreakFromDatesAsText(["2022-01-31"]),
+      1,
+      "streak from yesterday"
+    );
+  });
 });
 
 skip("quarantined tests for active streak", (t) => {
@@ -77,9 +90,6 @@ skip("quarantined tests for active streak", (t) => {
     activeStreak(DateTime.fromISO("2022-02-01"))(
       datesAsText.map((each) => DateTime.fromISO(each))
     );
-
-  t.equal(activeStreakFromDatesAsText(["2022-02-01"]), 1);
-  t.equal(activeStreakFromDatesAsText(["2022-01-31"]), 1);
 
   t.equal(
     startDateOfStreak(date("2022-02-01"), date("2022-01-30")),
