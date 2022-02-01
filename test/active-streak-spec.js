@@ -2,11 +2,11 @@ import { test } from "zora";
 import { DateTime } from "luxon";
 
 const activeStreak = (measurements) =>
-  measurements.length > 0
-    ? DateTime.fromISO(measurements[0].date) < "2022-01-31"
-      ? "0 days"
-      : "1 day"
-    : "0 days";
+  measurements.length === 0
+    ? "0 days"
+    : DateTime.fromISO(measurements[0].date) < "2022-01-31"
+    ? "0 days"
+    : "1 day";
 
 test("end to end", (t) => {
   t.equal(activeStreak([]), "0 days");
