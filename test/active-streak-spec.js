@@ -57,13 +57,18 @@ test("luxon", (t) => {
   t.ok(date("2022-01-30") < date("2022-01-31"));
 });
 
+test("active streak", (t) => {
+  const activeStreakFromDatesAsText = (datesAsText) =>
+    activeStreak(date("2022-02-01"))(datesAsText.map((each) => date(each)));
+
+  t.equal(activeStreakFromDatesAsText([]), 0, "no dates, no streak");
+});
+
 skip("quarantined tests for active streak", (t) => {
   const activeStreakFromDatesAsText = (datesAsText) =>
     activeStreak(DateTime.fromISO("2022-02-01"))(
       datesAsText.map((each) => DateTime.fromISO(each))
     );
-
-  t.equal(activeStreakFromDatesAsText([]), 0);
 
   t.equal(
     startDateOfStreak(date("2022-02-01"), date("2022-02-01")),
