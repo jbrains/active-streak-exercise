@@ -22,3 +22,12 @@ test("end to end", (t) => {
   t.ok(DateTime.fromISO("2022-01-30") < DateTime.fromISO("2022-01-31"));
   t.equal(formatActiveStreak([{ date: "2022-01-30" }]), "0 days");
 });
+test("active streak", (t) => {
+  const activeStreakFromDatesAsText = (datesAsText) =>
+    activeStreak(datesAsText.map((each) => DateTime.fromISO(each)));
+
+  t.equal(activeStreakFromDatesAsText([]), 0);
+  t.equal(activeStreakFromDatesAsText(["2022-02-01"]), 1);
+  t.equal(activeStreakFromDatesAsText(["2022-01-31"]), 1);
+  t.equal(activeStreakFromDatesAsText(["2022-01-30"]), 0);
+});
