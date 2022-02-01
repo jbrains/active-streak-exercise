@@ -54,6 +54,7 @@ test("luxon", (t) => {
     date("2022-02-01"),
     "Same ISO Date strings are equal with equals()"
   );
+  t.ok(date("2022-01-30") < date("2022-01-31"));
 });
 
 skip("quarantined tests for active streak", (t) => {
@@ -110,6 +111,5 @@ skip("quarantined tests for end to end", (t) => {
   t.equal(formatActiveStreak("2022-02-01")([]), "0 days");
   t.equal(formatActiveStreak("2022-02-01")([{ date: "2022-02-01" }]), "1 day");
   t.equal(formatActiveStreak("2022-02-01")([{ date: "2022-01-31" }]), "1 day");
-  t.ok(DateTime.fromISO("2022-01-30") < DateTime.fromISO("2022-01-31"));
   t.equal(formatActiveStreak("2022-02-01")([{ date: "2022-01-30" }]), "0 days");
 });
